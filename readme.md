@@ -14,7 +14,7 @@ install_github("suvarzz/MNuc")
 ### Install MNuc package from downloaded archive.
 Complete installation of MNuc package locally on your PC.  
 1. Download MNuc (MNuc > Clone or download > Download ZIP).  
-2. Extract from archive, rename if necessury to "MNuc", and place it into a directory of choice (e.g. ~/Projects/MNuc).  
+2. Extract from archive, rename if necessary to "MNuc", and place it into the directory of choice (e.g. ~/Projects/MNuc).  
 3. Install devtools and roxygen2 packages:  
 ```{r}
 install.packages(c(devtools, roxygen2))
