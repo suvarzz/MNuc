@@ -6,11 +6,10 @@
 
 These functions allows to create txt file with a list of TSS or ARS with a given size.}
 \usage{
-meta.plot(indir = "/home/suvar/Projects/001_ChIPseq_HU/output/tss_dat",
-  outdir, col.file, file_name = "Meta_plot", legend_names, lines_to_draw,
-  main = "Meta Plot", xlab = "Coordinates", ylab = "Signal",
-  xlim = NULL, ylim = NULL, las = 1, cex.main = 1, cex.lab = 1,
-  cex.axis = 1, cex = 1)
+meta.plot(indir, outdir, col.file, file_name = "Meta_plot", legend_names,
+  lines_to_draw = NULL, main = "Meta Plot", xlab = "Coordinates",
+  ylab = "Signal", xlim = NULL, ylim = NULL, las = 1,
+  cex.main = 1, cex.lab = 1, cex.axis = 1, cex = 1)
 }
 \arguments{
 \item{col.file}{File containing list of colors in the first column}

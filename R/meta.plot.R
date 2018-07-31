@@ -42,7 +42,6 @@ meta.plot <- function (indir,
     
     ## READ FILES, get data and keep the first (coordinates) and the last (averages) of data
     
-    indir="/home/suvar/Projects/001_ChIPseq_HU/output/tss_dat"
     files <- list.files(path=indir, pattern="*.dat.gz", full.names=T, recursive=FALSE)
     data <- lapply(1:length(files), function(f) {
         df <- read.table(files[f], header=TRUE, sep="\t", na.strings="NA")
