@@ -20,12 +20,12 @@
 
 ### META_PLOT
 
-meta.plot <- function (indir="/home/suvar/Projects/001_ChIPseq_HU/output/tss_dat",
+meta.plot <- function (indir,
                        outdir,
                        col.file,
                        file_name="Meta_plot",
                        legend_names,
-                       lines_to_draw,
+                       lines_to_draw=NULL,
                        main="Meta Plot",
                        xlab="Coordinates",
                        ylab="Signal",
