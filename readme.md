@@ -1,14 +1,16 @@
 # MNuc package
 R package containing tools for bioinformatics.  
 
-## How to install MNuc package from gitHub
+## Installation
+### Install MNuc package from gitHub
 Print in RStudio command line:  
 ```{r}
+library("devtools") 
 install_github("suvarzz/MNuc")  
 ```
 
-## How to install MNuc package in RStudio
-1. Download MNuc and place it in a directory (e.g ~/Projects/MNuc)  
+### Install MNuc package from downloaded archive.
+1. Download MNuc, extract from archive and place it into a directory of choice (e.g ~/Projects/MNuc).  
 2. Print in RStudio command line:  
 ```{r}
 library("devtools")  
