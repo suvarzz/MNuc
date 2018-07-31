@@ -1,0 +1,14 @@
+Package: MNuc
+Title: MNuc
+Version: 0.1.0
+Author: Mark Boltengagen
+Maintainer: Mark Boltengagen <m.boltengagen@gmail.com>
+Description: H4K16Ac ChIP-seq analysis in C.serevisiae
+License: GPL (>=2)
+VignetteBuilder: knitr
+Depends: R (>= 3.4), data.table, GenomicRanges, rtracklayer, TxDb.Scerevisiae.UCSC.sacCer3.sgdGene
+Imports: IRanges, GenomicFeatures
+Suggests: RColorBrewer
+NeedsCompilation: no
+Packaged: 2018-07-23
+RoxygenNote: 6.1.0
