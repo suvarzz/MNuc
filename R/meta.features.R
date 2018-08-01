@@ -42,7 +42,7 @@ csp <- csp[width(csp) == win]
 
 # Add csp into genomic ranges list
 grl <- GenomicRanges::GRangesList(csp)
-names(grl) <- paste("TSS_meta-", upstream, "-", downstream, sep="") 
+names(grl) <- paste("TSS_meta_", upstream, "_", downstream, sep="") 
 
 # save genomic ranges list as tsv file
 MNuc::saveGRlist(grl, outdir=outdir)

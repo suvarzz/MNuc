@@ -77,7 +77,7 @@ meta.data <- function(meta.csv, bdg.data, outdir, upstream, downstream, chromsiz
 	    # Write dat file
 	    name.1 <- sub('\\.bdg$', '', tools::file_path_sans_ext(basename(f)))
 	    name.2 <- sub('\\.csv$', '', tools::file_path_sans_ext(basename(meta.csv)))
-	    wfile <- gzfile(paste(outdir, name.1, "-", name.2, ".dat.gz", sep=""), "w")
+	    wfile <- gzfile(paste(outdir, name.1, "_", name.2, ".dat.gz", sep=""), "w")
 	    write.table(mx, file=wfile, append=FALSE, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
 	    close(wfile)
 	    rm(mx, gr)

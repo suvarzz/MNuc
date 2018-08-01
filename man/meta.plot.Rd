@@ -6,8 +6,8 @@
 
 These functions allows to create txt file with a list of TSS or ARS with a given size.}
 \usage{
-meta.plot(indir, outdir, col.file, filename = "Meta_plot", legend_names,
-  ncur = NULL, log = FALSE, main = "Meta Plot",
+meta.plot(indir, outdir, col.file, filename = "Meta_plot",
+  curnames = NULL, ncur = NULL, log = FALSE, main = "Meta Plot",
   xlab = "Coordinates", ylab = "Signal", xlim = NULL, ylim = NULL,
   legendpos = c("bottomright", "bottom", "bottomleft", "left", "topleft",
   "top", "topright", "right", "center"), las = 1, cex.main = 1,
@@ -22,7 +22,7 @@ meta.plot(indir, outdir, col.file, filename = "Meta_plot", legend_names,
 
 \item{filename}{Name of output file.}
 
-\item{legend_names}{A vector containing legend names.}
+\item{curnames}{A vector containing desiered legend names. The order of names must correspond to the data in the mean.dat files.}
 
 \item{ncur}{Numeric vector of lines to draw (e.g  c(2,4,6)). The
 first element in \code{ncur} is a denominator if \code{log} argument is TRUE.}

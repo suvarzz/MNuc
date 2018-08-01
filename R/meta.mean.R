@@ -38,22 +38,22 @@ meta.mean <- function(datdir,
     if (split == 'no') {
         win <- 1
         selected_names <- NULL
-        suffix <- '-All_'
+        suffix <- '_All_'
         
     } else if (split == 'limits') { 
         win <- length(limits)-1
-        suffix <- '-L_'
+        suffix <- '_L_'
             
     } else if (split == 'quantiles') {
         limits <- as.numeric(quantiles(dt[,2]))
         win <- 4
-        suffix <- '-Q_'
+        suffix <- '_Q_'
             
     } else if (split == 'groups') {
         win <- ngr
         llim <- 1
         rlim <- range <- ceiling(nrow(dt)/ngr)
-        suffix <- '-G_'
+        suffix <- '_G_'
     }
 
     for (i in 1:win) {

@@ -8,7 +8,7 @@
 #' @param outdir Output directory.
 #' @param col.file One column text file containing colors for curves.
 #' @param filename Name of output file.
-#' @param legend_names A vector containing legend names.
+#' @param curnames A vector containing desiered legend names. The order of names must correspond to the data in the mean.dat files.
 #' @param ncur Numeric vector of lines to draw (e.g  c(2,4,6)). The
 #'   first element in \code{ncur} is a denominator if \code{log} argument is TRUE.
 #' @param log Log2 of difference. The denominator is the first element in \code{ncur} argument.  
@@ -25,15 +25,13 @@
 #' 
 
 ### META_PLOT
-# TODO ncur subset names from legend names for plot. And legend_names set as in mean dat file. rename legend_names to curnames
-# TODO subset colors from the file in the same way using ncur
-# TODO make legend_names (curnames) by default the names of columns in dat files. in each cycle? or check if identical in all files?
 # FIXME fix ylim if log is TRUE
+
 meta.plot <- function (indir,
                        outdir,
                        col.file,
                        filename="Meta_plot",
-                       legend_names,
+                       curnames=NULL,
                        ncur=NULL,
                        log=FALSE,
                        main="Meta Plot",
@@ -49,16 +47,19 @@ meta.plot <- function (indir,
                        cex=1)     # font size legend
 {
     if (is.null(indir) | is.null(outdir)) stop("Specify \"indir\" and \"outdir\" input and output directories.")
-    if (is.null(legend_names)) stop("Specify legend names")
     legendpos <- match.arg(legendpos)
-    ## READ FILES, get data and keep the first (coordinates) and the last (averages) of data
     
+    ## READ FILES, get data and keep the first (coordinates) and the last (averages) of data
     files <- list.files(path=indir, pattern="*.dat.gz", full.names=T, recursive=FALSE)
     data <- lapply(1:length(files), function(f) {
-        df <- read.table(files[f], header=TRUE, sep="\t", na.strings="NA")
+        df <- read.table(files[f], header=TRUE, sep="\t", na.strings="NA", check.names=TRUE)
     })
     if (!all(apply(sapply(data, dim), 1, function(x) length(unique(x)) == 1) == TRUE)) stop("Dimentions of data in files are different.")
     if (is.null(ncur)) ncur <- 1:(ncol(data[[1]])-1)
+    if (is.null(curnames)) {
+        curnames = strtrim(colnames(data[[1]][,2:ncol(data[[1]])]), 17)
+    }
+    curnames = curnames[ncur]
         
     ## Read colors from file and take the last colors
     colors <- as.vector(read.table(col.file)[,1])
@@ -98,14 +99,14 @@ meta.plot <- function (indir,
     
         for (l in ncur) {
             if(log==FALSE) {
-                lines(data[[f]][,1], data[[f]][,(l+1)], col=colors[l], ...) }
+                lines(data[[f]][,1], data[[f]][,(l+1)], col=colors[l]) }
             if(log==TRUE ) {
-                # log2 of coordinates, draw log difference (line(l) - line(1))
+                # The first element in ncur determine the denominator
                 lines(data[[f]][,1], log2(data[[f]][,(l+1)] / data[[f]][,(ncur[1]+1)]), col=colors[l]) }
         }
         
         ##### LEGEND
-        legend(legendpos, legend_names,
+        legend(legendpos, curnames,
                ncol=ifelse(length(ncur) > 5, 2, 1),
                lty=rep(1, times=length(ncur)),	# line type
                lwd=rep(2, times=length(ncur)),	# line width
