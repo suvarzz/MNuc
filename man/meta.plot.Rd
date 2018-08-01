@@ -6,21 +6,34 @@
 
 These functions allows to create txt file with a list of TSS or ARS with a given size.}
 \usage{
-meta.plot(indir, outdir, col.file, file_name = "Meta_plot", legend_names,
-  lines_to_draw = NULL, main = "Meta Plot", xlab = "Coordinates",
-  ylab = "Signal", xlim = NULL, ylim = NULL, las = 1,
-  cex.main = 1, cex.lab = 1, cex.axis = 1, cex = 1)
+meta.plot(indir, outdir, col.file, filename = "Meta_plot", legend_names,
+  ncur = NULL, log = FALSE, main = "Meta Plot",
+  xlab = "Coordinates", ylab = "Signal", xlim = NULL, ylim = NULL,
+  legendpos = c("bottomright", "bottom", "bottomleft", "left", "topleft",
+  "top", "topright", "right", "center"), las = 1, cex.main = 1,
+  cex.lab = 1, cex.axis = 1, cex = 1)
 }
 \arguments{
-\item{col.file}{File containing list of colors in the first column}
+\item{indir}{Input directory with means DAT files (mean.dat.gz).}
 
-\item{legend_names}{A vector with legend names.}
+\item{outdir}{Output directory.}
 
-\item{main}{Main header of a plot.}
+\item{col.file}{One column text file containing colors for curves.}
+
+\item{filename}{Name of output file.}
+
+\item{legend_names}{A vector containing legend names.}
+
+\item{ncur}{Numeric vector of lines to draw (e.g  c(2,4,6)). The
+first element in \code{ncur} is a denominator if \code{log} argument is TRUE.}
+
+\item{log}{Log2 of difference. The denominator is the first element in \code{ncur} argument.}
+
+\item{main}{Main header of the plot.}
 
 \item{xlab}{downstrem nucleotides from feature.}
 
-\item{dir}{Input directory with DAT files (dat.gz).}
+\item{col.file}{File containing list of colors in the first column}
 
 \item{...}{Optional graphics arguments}
 }
