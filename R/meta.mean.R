@@ -130,7 +130,7 @@ write.mean.dat <- function(datdir, selected_names=NULL, outdir, file_name) {
     dwn <- coord$downstream
     
     DT <- data.table(Coordinates = up:dwn)
-    
+    dir.create(outdir, recursive=T)
     for (i in 1:length(files)) {
     
         ## Read gz file as data.table
@@ -152,7 +152,6 @@ write.mean.dat <- function(datdir, selected_names=NULL, outdir, file_name) {
         DT[, eval(newcolname) := mean.vec]
     }
     ## Save data.table as gz. file
-    dir.create(outdir, recursive=T)
     filename=paste(outdir, file_name, ".mean.dat", sep="")
     write.table(DT, file=filename, quote=FALSE, append=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
     system2("gzip", args=filename)

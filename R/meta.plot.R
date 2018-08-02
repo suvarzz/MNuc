@@ -14,6 +14,7 @@
 #'   must correspond to the data in the mean.dat files.
 #' @param ncur Numeric vector of lines to draw (e.g  c(2,4,6)). The first
 #'   element in 'ncur' is a denominator if 'log' argument is TRUE.
+#' @param labels Vector of names for multiple plot.
 #' @param log Log2 of difference. The denominator is the first element in 'ncur'
 #'   argument.
 #' @param main Main header of the plot.
@@ -42,9 +43,10 @@ meta.plot <- function (indir,
                        filename = "Meta_plot",
                        curnames = NULL,
                        ncur = NULL,
+                       labels = NULL,
                        log = FALSE,
                        main = "Meta Plot",
-                       xlab = "Coordinates",
+                       xlab = "Distance from feature, bp",
                        ylab = "Signal",
                        xlim = NULL,
                        ylim = NULL,
@@ -85,9 +87,10 @@ meta.plot <- function (indir,
         all_values <- unlist(lapply(data, '[', 2:ncol(data[[1]])))
         ylim <- c(min(all_values), max(all_values))
     }
+    # FIXME It is still not working
     if (is.null(ylim) & log==TRUE) {
-        logmin <- min(unlist(lapply(data, function(x) min(log2(x[,tail(ncur,-1)]/x[,ncur[1]])))))
-        logmax <- max(unlist(lapply(data, function(x) max(log2(x[,tail(ncur,-1)]/x[,ncur[1]])))))
+        logmin <- min(unlist(lapply(data, function(x) min(log2(which(!is.na((x[,tail(ncur,-1)]/x[,ncur[1]]))))))))
+        logmax <- max(unlist(lapply(data, function(x) max(log2(which(!is.na((x[,tail(ncur,-1)]/x[,ncur[1]]))))))))
         ylim <- c(logmin, logmax)
     }
     
@@ -96,21 +99,21 @@ meta.plot <- function (indir,
     rows=ceiling(length(files)/2)
     cols=ceiling(length(files)/rows)
     pdf(paste(outdir, filename, ".pdf", sep=""), width=3*cols, height=3*rows, pointsize=5)
-    par(mfrow=c(rows, cols))
+    par(mfrow=c(rows, cols), cex=1)
     
     for (f in 1:length(data)) {
         ## Empty plot
         plot(1, type = "n",
              xlim=xlim,
              ylim=ylim,
-             main=main,
+             main=paste(main,labels[f]),
              xlab=xlab,
              ylab=ylab,
              las=las,
              cex.main=cex.main,
              cex.lab=cex.lab,
              cex.axis=cex.axis)
-    
+        
         for (l in ncur) {
             if(log==FALSE) {
                 lines(data[[f]][,1], data[[f]][,(l+1)], col=colors[l]) }
@@ -126,7 +129,6 @@ meta.plot <- function (indir,
                lwd=rep(2, times=length(ncur)),	# line width
                col=colors[ncur],
                cex=cex)	# text size
-    
-        dev.off()
     }
+    dev.off()
 }

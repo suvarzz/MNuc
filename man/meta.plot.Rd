@@ -8,8 +8,9 @@ These functions allows to create txt file with a list of TSS or ARS with a
 given size.}
 \usage{
 meta.plot(indir, outdir, col.file, filename = "Meta_plot",
-  curnames = NULL, ncur = NULL, log = FALSE, main = "Meta Plot",
-  xlab = "Coordinates", ylab = "Signal", xlim = NULL, ylim = NULL,
+  curnames = NULL, ncur = NULL, labels = NULL, log = FALSE,
+  main = "Meta Plot", xlab = "Distance from feature, bp",
+  ylab = "Signal", xlim = NULL, ylim = NULL,
   legendpos = c("bottomright", "bottom", "bottomleft", "left", "topleft",
   "top", "topright", "right", "center"), las = 1, cex.main = 1,
   cex.lab = 1, cex.axis = 1, cex = 1)
@@ -29,6 +30,8 @@ must correspond to the data in the mean.dat files.}
 
 \item{ncur}{Numeric vector of lines to draw (e.g  c(2,4,6)). The first
 element in 'ncur' is a denominator if 'log' argument is TRUE.}
+
+\item{labels}{Vector of names for multiple plot.}
 
 \item{log}{Log2 of difference. The denominator is the first element in 'ncur'
 argument.}
