@@ -60,14 +60,14 @@ meta.plot <- function (indir,
         curnames = strtrim(colnames(data[[1]][,2:ncol(data[[1]])]), 17)
     }
     curnames = curnames[ncur]
-        
+    
     ## Read colors from file and take the last colors
     colors <- as.vector(read.table(col.file)[,1])
     colors <- tail(colors, n=(ncol(data[[1]])-1))
     
     ## GRAPHICAL PARAMETERS
     ## get coordinates and values limits
-    if(is.null(xlim)) {
+    if (is.null(xlim)) {
         all_coord <- unlist(lapply(data, '[', 1 ))
         xlim <- c(min(all_coord), max(all_coord))
     } 
@@ -75,6 +75,11 @@ meta.plot <- function (indir,
     if (is.null(ylim) & log==FALSE) {
         all_values <- unlist(lapply(data, '[', 2:ncol(data[[1]])))
         ylim <- c(min(all_values), max(all_values))
+    }
+    if (is.null(ylim) & log==TRUE) {
+        logmin <- min(unlist(lapply(data, function(x) min(log2(x[,tail(ncur,-1)]/x[,ncur[1]])))))
+        logmax <- max(unlist(lapply(data, function(x) max(log2(x[,tail(ncur,-1)]/x[,ncur[1]])))))
+        ylim <- c(logmin, logmax)
     }
     
     ##### Draw plot for all files
