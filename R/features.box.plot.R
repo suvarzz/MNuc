@@ -3,9 +3,9 @@
 #' @param indir Input directory containing bedgraph files.
 #' @param outdir Output directory.
 #' @param fdir Directory containing different features in files.
-#' @chromsizes Text file containing sizes of all chromosomes in columns (chromosome ~ size).
+#' @param chromsizes Text file containing sizes of all chromosomes in columns (chromosome ~ size).
 #' @param title Main title of the plot
-#' @filename Name of the output plot file
+#' @param filename Name of the output plot file
 #' @param notes Optional notes, which is displayed in the bottom fo the plot.
 #' @param exclude_seq Optional argument to exclude chromosomes.
 #'

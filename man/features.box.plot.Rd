@@ -16,7 +16,11 @@ features.box.plot(indir, outdir, fdir, chromsizes,
 
 \item{fdir}{Directory containing different features in files.}
 
+\item{chromsizes}{Text file containing sizes of all chromosomes in columns (chromosome ~ size).}
+
 \item{title}{Main title of the plot}
+
+\item{filename}{Name of the output plot file}
 
 \item{notes}{Optional notes, which is displayed in the bottom fo the plot.}
 
