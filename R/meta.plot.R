@@ -130,5 +130,6 @@ meta.plot <- function (indir,
                col=colors[ncur],
                cex=cex)	# text size
     }
+
     dev.off()
 }
