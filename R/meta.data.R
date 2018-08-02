@@ -22,7 +22,7 @@ meta.data <- function(meta.csv, bdg.data, outdir, upstream, downstream, chromsiz
         stop("Please specify \"outdir\" output directory.\n")
 
     # Create output directory
-    dir.create(file.path(outdir))
+    dir.create(file.path(outdir), recursive=T)
 
 	seql <- MNuc::seqlevels.from.chrsizes(chromsizes)
 
