@@ -52,10 +52,8 @@ meta.plot <- function (indir,
                        ylim = NULL,
                        legendpos = c("bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right", "center"),
                        las = 1,		 # labels orientations (all horizontal)
-                       cex.main = 1, # font size for titel
-                       cex.lab = 1,	 # font size for labels
-                       cex.axis = 1, # font size for axis
-                       cex = 1)     # font size legend
+                       cex.lab = 1,	
+                       cex.axis = 1)
 {
     if (is.null(indir) | is.null(outdir)) stop("Specify \"indir\" and \"outdir\" input and output directories.")
     legendpos <- match.arg(legendpos)
@@ -98,21 +96,24 @@ meta.plot <- function (indir,
     dir.create(outdir, recursive=T)
     rows=ceiling(length(files)/2)
     cols=ceiling(length(files)/rows)
+    
+    # PDF
     pdf(paste(outdir, filename, ".pdf", sep=""), width=3*cols, height=3*rows, pointsize=5)
-    par(mfrow=c(rows, cols), cex=1)
+    par(mfrow=c(rows, cols), cex=1, mar=c(4.1,4.1,2.1,1.1), oma=c(0,0,2,0))
     
     for (f in 1:length(data)) {
         ## Empty plot
         plot(1, type = "n",
              xlim=xlim,
              ylim=ylim,
-             main=paste(main,labels[f]),
              xlab=xlab,
              ylab=ylab,
              las=las,
-             cex.main=cex.main,
              cex.lab=cex.lab,
              cex.axis=cex.axis)
+        
+        # Header for each plot
+        title(labels[f], line=0.5, cex.main=1)
         
         for (l in ncur) {
             if(log==FALSE) {
@@ -127,9 +128,10 @@ meta.plot <- function (indir,
                ncol=ifelse(length(ncur) > 5, 2, 1),
                lty=rep(1, times=length(ncur)),	# line type
                lwd=rep(2, times=length(ncur)),	# line width
-               col=colors[ncur],
-               cex=cex)	# text size
+               col=colors[ncur])
     }
-
+    # Main title
+    title(main, outer=TRUE, cex.main=1.5)
+    
     dev.off()
 }
