@@ -83,10 +83,9 @@ meta.plot <- function (indir,
         all_values <- unlist(lapply(data, '[', 2:ncol(data[[1]])))
         ylim <- c(min(all_values), max(all_values))
     }
-    # FIXME It is still not working
     if (is.null(ylim) & log==TRUE) {
-        logmin <- min(unlist(lapply(data, function(x) min(log2(which(!is.na((x[,tail(ncur,-1)]/x[,ncur[1]]))))))))
-        logmax <- max(unlist(lapply(data, function(x) max(log2(which(!is.na((x[,tail(ncur,-1)]/x[,ncur[1]]))))))))
+        logmin <- min(unlist(lapply(data, function(x) min(log2((x[,(tail(ncur,-1)+1)]/x[,(ncur[1]+1)]))))))
+        logmax <- max(unlist(lapply(data, function(x) max(log2((x[,(tail(ncur,-1)+1)]/x[,(ncur[1]+1)]))))))
         ylim <- c(logmin, logmax)
     }
     
