@@ -6,8 +6,7 @@
 \usage{
 features.box.plot(indir, outdir, fdir, chromsizes,
   title = "Average log2 difference of H4K16Ac vs 1.5h sample",
-  filename = "All_features_box_plot", notes = "",
-  exclude_seq = "chrM")
+  filename = "All_features_box_plot", notes = "", exclude_seq = "chrM")
 }
 \arguments{
 \item{indir}{Input directory containing bedgraph files.}

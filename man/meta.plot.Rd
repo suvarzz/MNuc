@@ -7,12 +7,11 @@
 These functions allows to create txt file with a list of TSS or ARS with a
 given size.}
 \usage{
-meta.plot(indir, outdir, col.file, filename = "Meta_plot",
-  curnames = NULL, ncur = NULL, labels = NULL, log = FALSE,
-  main = "Meta Plot", xlab = "Distance from feature, bp",
-  ylab = "Signal", xlim = NULL, ylim = NULL,
-  legendpos = c("bottomright", "bottom", "bottomleft", "left", "topleft",
-  "top", "topright", "right", "center"), las = 1, cex.lab = 1,
+meta.plot(indir, outdir, col.file, filename = "Meta_plot", curnames = NULL,
+  ncur = NULL, labels = NULL, log = FALSE, main = "Meta Plot",
+  xlab = "Distance from feature, bp", ylab = "Signal", xlim = NULL,
+  ylim = NULL, legendpos = c("bottomright", "bottom", "bottomleft", "left",
+  "topleft", "top", "topright", "right", "center"), las = 1, cex.lab = 1,
   cex.axis = 1)
 }
 \arguments{
