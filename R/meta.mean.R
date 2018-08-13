@@ -22,7 +22,7 @@
 meta.mean <- function(datdir, 
                      outdir, 
                      file_name="Meandata", 
-                     split=c('no', 'limits', 'quantiles', 'groups'), 
+                     split=c('no', 'limits', 'quantiles', 'groups', 'factor'), 
                      table=NULL, 
                      val.name=NULL, 
                      limits=NULL, 
@@ -30,7 +30,7 @@ meta.mean <- function(datdir,
 
 	split <- match.arg(split)
     if (split == 'limits' & is.null(limits)) stop("Specify \"limits\" as a vector of values.")
-    if (any(split == c('limits', 'quantiles', 'groups'))) {
+    if (any(split == c('limits', 'quantiles', 'groups', 'factor'))) {
         if (is.null(table)) stop("Specify \"table\" file with features ~ values.")
         
         dt <- MNuc::read.data.table(file=table, val.name=val.name) }
@@ -45,7 +45,7 @@ meta.mean <- function(datdir,
         suffix <- '_L_'
             
     } else if (split == 'quantiles') {
-        limits <- as.numeric(quantiles(dt[,2]))
+        limits <- as.numeric(quantile(as.numeric(unlist(dt[,2]))))
         win <- 4
         suffix <- '_Q_'
             
@@ -54,6 +54,10 @@ meta.mean <- function(datdir,
         llim <- 1
         rlim <- range <- ceiling(nrow(dt)/ngr)
         suffix <- '_G_'
+    } else if (split == 'factor') {
+        f <- as.factor(dt[[val.name]])
+        win <- length(levels(f))
+        suffix <- '_F_'
     }
 
     for (i in 1:win) {
@@ -62,10 +66,12 @@ meta.mean <- function(datdir,
             llim <- limits[i]
             rlim <- limits[i+1]
             selected_names <- dt[get(names(dt)[2]) >= llim & get(names(dt)[2]) < rlim][,get(names(dt)[1])]
-        } else if (split=='groups') {
+        } else if (split == 'groups') {
             selected_names <- dt[,get(names(dt)[1])[llim:rlim]]
             llim <- llim + range
             rlim <- rlim + range
+        } else if (split == 'factor') {
+            selected_names <- dt[get(names(dt)[2]) == levels(f)[i]][,get(names(dt)[1])]
         }
         
         file=paste(file_name, suffix, i, sep="")

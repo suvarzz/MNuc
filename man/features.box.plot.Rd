@@ -6,7 +6,8 @@
 \usage{
 features.box.plot(indir, outdir, fdir, chromsizes,
   title = "Average log2 difference of H4K16Ac vs 1.5h sample",
-  filename = "All_features_box_plot", notes = "", exclude_seq = "chrM")
+  filename = "All_features_box_plot", notes = "", exclude_seq = "chrM",
+  ylim = NULL)
 }
 \arguments{
 \item{indir}{Input directory containing bedgraph files.}
@@ -21,7 +22,7 @@ features.box.plot(indir, outdir, fdir, chromsizes,
 
 \item{filename}{Name of the output plot file}
 
-\item{notes}{Optional notes, which is displayed in the bottom fo the plot.}
+\item{notes}{Optional notes, which is displayed in the bottom of the plot.}
 
 \item{exclude_seq}{Optional argument to exclude chromosomes.}
 }

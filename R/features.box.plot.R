@@ -6,7 +6,7 @@
 #' @param chromsizes Text file containing sizes of all chromosomes in columns (chromosome ~ size).
 #' @param title Main title of the plot
 #' @param filename Name of the output plot file
-#' @param notes Optional notes, which is displayed in the bottom fo the plot.
+#' @param notes Optional notes, which is displayed in the bottom of the plot.
 #' @param exclude_seq Optional argument to exclude chromosomes.
 #'
 #' @export
@@ -18,7 +18,8 @@ features.box.plot <- function(indir,
 							  title="Average log2 difference of H4K16Ac vs 1.5h sample",
 							  filename="All_features_box_plot",
 							  notes="",
-							  exclude_seq="chrM")
+							  exclude_seq="chrM",
+							  ylim=NULL)
 {
 	seql <- MNuc::seqlevels.from.chrsizes(chromsizes)
 
@@ -60,18 +61,20 @@ features.box.plot <- function(indir,
 	par(oma=c(4,1,4,1)) # outer margins in lines
 	col=rep(c('aliceblue','mistyrose'), 11)
 	bor=rep(c('darkslateblue', 'brown4'), 11)
-	lim_min <- -0.5    # min(unlist(list_data))
-	lim_max <- 0.5    # max(unlist(list_data))
 
 	invisible(lapply(seq_along(feature_list), function(idx) {
     	list_data <- lapply(scores_list, function(sc) {
     	    data <- GenomicRanges::binnedAverage(feature_list[[idx]], sc, "avg_score")
     	    data$avg_score
     	})
-    	#lim_min <- min(unlist(list_data))
-    	#lim_max <- max(unlist(list_data))
+    	if (is.null(ylim)) {
+    	    lim_min <- min(unlist(list_data))
+    	    lim_max <- max(unlist(list_data))
+    	    ylim = c(lim_min, lim_max)
+    	}
+
     	boxplot(list_data, 
-    	        ylim=c(lim_min, lim_max), 
+    	        ylim=ylim, 
     	        main=feature_names[idx],
     	        las=1,
     	        xaxt="n",

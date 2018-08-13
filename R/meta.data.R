@@ -11,38 +11,44 @@
 #' @return TSS regions as CSV file dat.gz
 #' @export
 
-meta.data <- function(meta.csv, bdg.data, outdir, upstream, downstream, chromsizes, threads=NULL)
+meta.data <- function(meta.csv, 
+                      bdg.data, 
+                      outdir, 
+                      upstream=NULL, 
+                      downstream=NULL, 
+                      chromsizes='sc', 
+                      threads=NULL, 
+                      stretch=FALSE)
 {
     if (is.null(bdg.data))
-        stop("Please specify \"bdg.data\" bedgraph data containing signals")
+        stop("Please specify \"bdg.data\" directory containing bedgraph files with signals")
     
 	files <- list.files(path=bdg.data, pattern="*.bdg.gz", full.names=TRUE, recursive=FALSE)
     
-    if (is.null(outdir))
+	if (is.null(meta.csv))
+	    stop("Please specify \"meta.csv\" output directory.\n")
+	
+	seql <- MNuc::seqlevels.from.chrsizes(chromsizes)
+	ftr <- makeGRangesFromDataFrame(read.table(meta.csv, sep="\t", header=TRUE, quote =""), keep.extra.columns=TRUE, seqinfo=seql)
+	
+	if (is.null(outdir))
         stop("Please specify \"outdir\" output directory.\n")
 
-    # Create output directory
-    dir.create(file.path(outdir), recursive=T)
-
-	seql <- MNuc::seqlevels.from.chrsizes(chromsizes)
-
-    if (!is.numeric(upstream) & !is.numeric(downstream))
-        stop("Upstream region \"upstream\" and downstream region \"downstream\" must be numeric.\n")
-
-    win = upstream+downstream
-
-    if (is.null(meta.csv))
-        stop("Please specify \"meta.csv\" output directory.\n")
-
-    ftr <- makeGRangesFromDataFrame(read.table(meta.csv, sep="\t", header=TRUE, quote =""), keep.extra.columns=TRUE, seqinfo=seql)
-
-	if (!all(width(ftr)==win))
-        stop("Width of ranges from \"meta.csv\" is not equal to window width \"upstream\" + \"downtream\".")
-
-	if (!is.null(threads) & is.numeric(threads)) {
-        numcores = threads
-    } else { numcores=parallel::detectCores() - 1 }
-
+    if (stretch==TRUE) {
+	    win=1000
+    } else { 
+	    if (!is.numeric(upstream) & !is.numeric(downstream))
+	        stop("Upstream region \"upstream\" and downstream region \"downstream\" must be numeric.\n")
+        win = upstream+downstream
+        if (!all(width(ftr)==win))
+            stop("Width of ranges from \"meta.csv\" is not equal to window width \"upstream\" + \"downtream\".")
+        }
+	
+	# Create output directory
+	dir.create(file.path(outdir), recursive=T)
+	
+    numcores = ifelse((!is.null(threads) & is.numeric(threads)), threads, parallel::detectCores() - 1)
+	
     # Write dat files and return NULL
     silent <- mclapply(files, function(f) {
         gr <- import(f, format="bedGraph")
@@ -53,8 +59,11 @@ meta.data <- function(meta.csv, bdg.data, outdir, upstream, downstream, chromsiz
 	    # first column of mx contains genomic coordinates
 	    colnames(mx)[1] <- "Coord"
 	    # Set coordinates
-	    mx[,1] <- seq(from = -1*upstream+1, to = downstream, by = 1)
-        for (i in 1:length(ftr)) {
+	    if (stretch==TRUE) {
+	        mx[,1] <- seq(from = 0, to = 0.999, by = 0.001)
+	    } else {mx[,1] <- seq(from = -1*upstream+1, to = downstream, by = 1)}
+        
+	    for (i in 1:length(ftr)) {
 	        ftr.i <- ftr[i]
 	        ovlp <- findOverlaps(ftr.i, gr)
 	  
@@ -65,15 +74,23 @@ meta.data <- function(meta.csv, bdg.data, outdir, upstream, downstream, chromsiz
 	            start(gvalue[1]) = start(border[1])
 	            end(gvalue[length(gvalue)]) = end(border[length(gvalue)])
 	            vec <- rep(gvalue$score, width(gvalue))
-	    
+	            if (as.logical(strand(ftr[i]) == "-")) {vec <- rev(vec)}
+	       
+	            if (stretch==TRUE) { 
+	                k=width(ftr.i)/1000
+	                nvec <- vector(mode='numeric', length=1000)
+	                for (x in 1:1000) {
+	                    nvec[x] <- vec[ceiling(x*k)] }
+	                    vec <- nvec
+	                }
+	             }
+	        
 	            if (length(vec) == win) {
-                    if (as.logical(strand(ftr[i]) == "-")) {vec <- rev(vec)}
-	                mx[,i+1] <- vec
-	                # the last column in feature genomic range is a name of gene/ars
+                    mx[,i+1] <- vec
+	                # the last column in feature genomic range is a name of feature
 	                colnames(mx)[i+1] <- as.character(mcols(ftr)[[length(mcols(ftr))]][i])
 	            }
             }
-        }
 	    # Write dat file
 	    name.1 <- sub('\\.bdg$', '', tools::file_path_sans_ext(basename(f)))
 	    name.2 <- sub('\\.csv$', '', tools::file_path_sans_ext(basename(meta.csv)))

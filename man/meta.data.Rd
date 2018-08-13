@@ -4,8 +4,8 @@
 \alias{meta.data}
 \title{Meta data generator}
 \usage{
-meta.data(meta.csv, bdg.data, outdir, upstream, downstream, chromsizes,
-  threads = NULL)
+meta.data(meta.csv, bdg.data, outdir, upstream = NULL, downstream = NULL,
+  chromsizes = "sc", threads = NULL, stretch = FALSE)
 }
 \arguments{
 \item{meta.csv}{csv file with meta features.}

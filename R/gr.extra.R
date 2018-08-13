@@ -69,20 +69,24 @@ saveGRlist <- function(grl, outdir=NULL) {
 #' @description Transform chromosome sizes in a text file in genomic ranges seqlevels
 #'
 #' @param chromsizes Tab separated text file containing sizes of all chromosomes in columns (chromosome ~ size).
+#'     Default 'sc' value loads chromosome sizes for Saccharomyces cerevisiae (SacCer3).
 #'
 #' @return seql (named vector)
 #'
 #' @export
 
-seqlevels.from.chrsizes <- function(chromsizes) {
+seqlevels.from.chrsizes <- function(chromsizes='sc') {
 
-    if (is.null(chromsizes))
-        stop("Please specify \"chromsizes\" chromosome sizes file (chromosome ~ size).\n")
+    if (is.null(chromsizes)) stop("Please specify \"chromsizes\" chromosome sizes file (chromosome ~ size).\n")
+    if (chromsizes=='sc') {
+        seql <- readRDS(system.file("data", "sc.chromsizes.rds", package="MNuc"))
+    } else if (file.exists(chromsizes)) {
+        # Set chromosomes length parameter - seql
+        chrom.sizes <- read.table(chromsizes, sep="\t", header=FALSE, quote="", col.names=c("chromosome", "length"))
+        seql = as.numeric(chrom.sizes$length)
+        names(seql)=as.character(chrom.sizes$chromosome)
+        } else stop("Please specify \"chromsizes\" chromosome sizes file (chromosome ~ size).\n")
 
-    # Set chromosomes length parameter - seql
-    chrom.sizes <- read.table(chromsizes, sep="\t", header=FALSE, quote="", col.names=c("chromosome", "length"))
-    seql = as.numeric(chrom.sizes$length)
-    names(seql)=as.character(chrom.sizes$chromosome)
 	return(seql)
 }
 
@@ -116,3 +120,34 @@ get.signal <- function(gr, chr, start, end) {
     vec <- rep(gvalue$score, width(gvalue))
     return(vec)
 }
+
+################################################################################
+#' Import csv to genomic ranges
+#'
+#' @description Read csv file and return genomic ranges.
+#' 
+#' @param CSV file containing tab separated columns: seqname, start, end, (optional: width), strand and optional extra 
+#'     columns containing metadata (e.g. genenemes, score, signal, cg). Read also csv files from .gz archives.
+#'     | seqname | start | end | strand | score |
+#'     | chrI    | 100   | 200 | +      | 1.5   |
+#'
+#' @param chromsizes File containing chromosome sizes.
+#'     'sc' - Preset Saccharomyces serevisiae chromosome sizes.
+#'
+#' @seealso \code{\link{saveGRlist}}
+#'
+#' @export
+# TODO check if possible to leave seqinfo=NULL and make chromsizes argument optional.
+
+read.csv.gr <- function(file, chromsizes='sc') {
+    # Check if file is an 'gz'
+    file = ifelse(tail(unlist(strsplit(file, "[.]")), n=1)=='gz', paste0("zcat <'", file,"'"), file)
+    # Read text table as data.table
+    df <- fread(file, header=TRUE, sep="\t", na.strings="NA", quote="")
+    # Get seqlevels
+    seql <- MNuc::seqlevels.from.chrsizes(chromsizes=chromsizes)
+    # Import genomic ranges from data frame
+    gr <- makeGRangesFromDataFrame(df, keep.extra.columns=TRUE, seqinfo=seql)
+    return(gr)
+}
+

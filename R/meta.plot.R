@@ -43,6 +43,8 @@ meta.plot <- function (indir,
                        ncur = NULL,
                        labels = NULL,
                        log = FALSE,
+                       smooth = FALSE,
+                       spar = 0.85,
                        main = "Meta Plot",
                        xlab = "Distance from feature, bp",
                        ylab = "Signal",
@@ -113,11 +115,21 @@ meta.plot <- function (indir,
         title(labels[f], line=0.5, cex.main=1)
         
         for (l in ncur) {
-            if(log==FALSE) {
-                lines(data[[f]][,1], data[[f]][,(l+1)], col=colors[l]) }
-            if(log==TRUE ) {
+            x = data[[f]][,1]
+            if(log==FALSE) { 
+                y = data[[f]][,(l+1)]
+            } else if(log==TRUE ) {
                 # The first element in ncur determine the denominator
-                lines(data[[f]][,1], log2(data[[f]][,(l+1)] / data[[f]][,(ncur[1]+1)]), col=colors[l]) }
+                y = log2(data[[f]][,(l+1)] / data[[f]][,(ncur[1]+1)])
+            }
+            
+            # Draw lines
+            if (smooth == FALSE) {
+                lines(x,y , col=colors[l])
+            } else if (smooth == TRUE) {
+                lines(smooth.spline(x,y, spar=spar), col=colors[l])
+            }
+            
         }
         
         ##### LEGEND

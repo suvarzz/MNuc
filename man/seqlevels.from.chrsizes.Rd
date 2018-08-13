@@ -4,10 +4,11 @@
 \alias{seqlevels.from.chrsizes}
 \title{Get seqlevels from chromosome sizes txt file}
 \usage{
-seqlevels.from.chrsizes(chromsizes)
+seqlevels.from.chrsizes(chromsizes = "sc")
 }
 \arguments{
-\item{chromsizes}{Tab separated text file containing sizes of all chromosomes in columns (chromosome ~ size).}
+\item{chromsizes}{Tab separated text file containing sizes of all chromosomes in columns (chromosome ~ size).
+Default 'sc' value loads chromosome sizes for Saccharomyces cerevisiae (SacCer3).}
 }
 \value{
 seql (named vector)
