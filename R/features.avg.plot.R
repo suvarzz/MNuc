@@ -1,4 +1,4 @@
-#' All features box plot
+#' All features averages plot
 #'
 #' @param indir Input directory containing bedgraph files.
 #' @param outdir Output directory.
@@ -15,9 +15,9 @@ features.box.plot <- function(indir,
 							  outdir,
 							  fdir,
 							  chromsizes='sc',
-							  title="Average log2 difference of H4K16Ac vs 1.5h sample",
-							  filename="All_features_box_plot",
-							  notes="",
+							  lables = NULL,
+							  title="All features averages plot",
+							  filename="All_features_avg_plot",
 							  exclude_seq="chrM",
 							  ylim=NULL)
 {
@@ -33,29 +33,12 @@ features.box.plot <- function(indir,
 	} )
 
 	feature_names <- lapply(features, function(f) { tools::file_path_sans_ext(basename(f)) })
-	print("All features imported as genomicranges")
+	cat("All features imported as genomicranges")
 
 	### Import Signals > GR
-	print("Importing signals started")
+	cat("Importing signals started")
 	signals <- list.files(path=indir, pattern="*.bdg.gz", full.names=TRUE, recursive=FALSE)
-	#++++++++++++++++++
-	vctr <- signals
-	nvctr <- vector(mode="character")
-	l = length(vctr)/2
-	
-	h = 0
-	for (i in 1:length(vctr)) {
-	    if (i %% 2 != 0) {
-	        nvctr[i] <- vctr[(i-h)]
-	        h=h+1
-	    } else {
-	        nvctr[i] <- vctr[(l+h)]
-	    }
-	}
-	
-	signals <- nvctr
-	#+++++++++++++++++++
-	
+		
 	scores_list <- lapply(signals, function(x) {
     	signal <- sort(GenomeInfoDb::sortSeqlevels(import(x, format="bedGraph")))
     	# Set seqlevels to make a correct coverage across all chromosome lengths
@@ -65,46 +48,53 @@ features.box.plot <- function(indir,
     	GenomicRanges::coverage(signal, weight="score")
 	} )
 
-	print("Importing signals ended, scores list created without errors")
+	cat("Importing signals ended, scores list created without errors")
 
 	### Get Signal Names
-	signal_names <- sapply(strsplit(tools::file_path_sans_ext(basename(signals)), "_"), function(x) x[2])
-
+	if (is.null(lables)) {
+    	signal_names <- sapply(strsplit(tools::file_path_sans_ext(basename(signals)), "_"), function(x) x[2])
+	} else { signal_names <- lables}   
 	### START PLOT
-	print("Plot started")
+	cat("Plot started")
 	dir.create(file.path(outdir), recursive = TRUE)
+	
 	pdf(paste(outdir, filename, ".pdf", sep=""), width=7, height=13, pointsize=5)
 	par(mfrow=c(6,3)) # how many diagrams on one plot?
 	par(mar=c(4,4,2,1.5)) # margins size
 	par(oma=c(4,1,4,1)) # outer margins in lines
-	col=rep(c('aliceblue','mistyrose'), 11)
-	bor=rep(c('darkslateblue', 'brown4'), 11)
+	col=c('darkslateblue', 'brown4')
 
 	invisible(lapply(seq_along(feature_list), function(idx) {
-    	list_data <- lapply(scores_list, function(sc) {
+    	vec_data <- sapply(scores_list, function(sc) {
     	    data <- GenomicRanges::binnedAverage(feature_list[[idx]], sc, "avg_score")
-    	    data$avg_score
+            m <- mean(data$avg_score)
     	})
     	
-    	if (is.null(ylim)) {
-    	    lim_min <- min(unlist(list_data))
-    	    lim_max <- max(unlist(list_data))
-    	    ylim = c(lim_min, lim_max)
-    	}
+    	lim_min <- min(vec_data)
+    	lim_max <- max(vec_data)
+    	ylim = c(lim_min, lim_max)
     	
-    	boxplot(list_data, 
-    	        ylim=ylim, 
-    	        main=feature_names[idx],
-    	        las=1,
-    	        xaxt="n",
-    	        col=col,
-    	        border=bor,
-    	        outline = FALSE) # do not draw outliers
-    	axis(1, at=1:length(signal_names), labels=signal_names, srt = 45, xpd=TRUE)
+    	mx <- matrix(vec_data, length(indir), byrow=TRUE)
+    	x <- c(1:ncol(mx))
+    	plot(0,type='n',
+    	     axes=T,
+    	     xaxt="n",
+    	     ann=T, 
+    	     ylim=ylim, 
+    	     xlim=c(1, ncol(mx)),
+    	     main=feature_names[idx])
+    	
+        for (i in 1:nrow(mx)) {
+            y <- mx[i,] 
+            points(x, y, col=col[i])
+            smoothingSpline = smooth.spline(x, y, spar=0.1)
+            xl <- seq(min(x), max(x), length=length(x)*10)
+            lines(predict(smoothingSpline, xl), col=col[i])
+        }
+        axis(1, at=1:length(signal_names[x]), labels=signal_names[x], srt = 45, xpd=TRUE)
 	}))
 	
 	mtext(title, side=3, line=1, outer=TRUE, cex=1.5)
-	mtext(notes, side=1, line=1, outer=TRUE, adj=0)
 	mtext(Sys.Date(), side=1, line=1, outer=TRUE, adj=1)
 	dev.off()
 }

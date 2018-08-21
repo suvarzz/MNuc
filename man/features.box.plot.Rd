@@ -4,10 +4,10 @@
 \alias{features.box.plot}
 \title{All features box plot}
 \usage{
-features.box.plot(indir, outdir, fdir, chromsizes,
+features.box.plot(indir, outdir, fdir, chromsizes = "sc",
   title = "Average log2 difference of H4K16Ac vs 1.5h sample",
-  filename = "All_features_box_plot", notes = "", exclude_seq = "chrM",
-  ylim = NULL)
+  filename = "All_features_box_plot", notes = "",
+  exclude_seq = "chrM", ylim = NULL)
 }
 \arguments{
 \item{indir}{Input directory containing bedgraph files.}
