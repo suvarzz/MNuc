@@ -40,6 +40,27 @@ gr.extend.reads <- function(x, fragmentLen=75, trim=0)
 
 ###############################################################################
 
+#' Save Genomic Range as a csv file.
+#' 
+#' @param gr Genomic range
+#' @param outdir Output directory
+#' @param filename Name of output file
+#'
+#' @return None
+#' 
+#' @export
+
+saveGR <- function(gr, outdir=NULL, filename='new_genomic_range') {
+    if (is.null(outdir)) {
+        stop("output directory must be specified") }
+    if (!file.exists(outdir)) {
+        dir.create(file.path(outdir)) }
+    write.table(as(gr, "data.frame"), file = paste(outdir, filename, ".csv", sep=""), sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE )
+    system2("gzip", args=paste(outdir, filename, ".csv", sep=""))
+}
+
+###############################################################################
+
 #' Save Genomic Ranges List as a set of csv files.
 #' 
 #' @param grl Named genomic ranges list

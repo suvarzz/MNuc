@@ -23,8 +23,8 @@ values.}
 \item{table}{Data table containing list of names in one column and a column
 of sorted values. Must be set if split by either quantiles or limits.}
 
-\item{limits}{A vector of values to split, e.g. c(0, 25, 50, 75, 100) will
-split into for groups 0-25, 25-50, 50-75, 75-100, where 0 is a minimal
+\item{limits}{A vector of values to split, e.g. c(0, 25, 50, 75, 100) 
+splits into for groups 0-25, 25-50, 50-75, 75-100, where 0 is a minimal
 value and 100 is maximal.}
 }
 \description{

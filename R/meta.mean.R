@@ -11,8 +11,8 @@
 #' @param split Argument showing how to split: 'no' - take all data (default);
 #'   'quantiles' - split by quantiles q1-q4; 'limits' - split by given vector of
 #'   values.
-#' @param limits A vector of values to split, e.g. c(0, 25, 50, 75, 100) will
-#'   split into for groups 0-25, 25-50, 50-75, 75-100, where 0 is a minimal
+#' @param limits A vector of values to split, e.g. c(0, 25, 50, 75, 100) 
+#'   splits into for groups 0-25, 25-50, 50-75, 75-100, where 0 is a minimal
 #'   value and 100 is maximal.
 #' 
 #' @seealso \code{\link{meta.data}}

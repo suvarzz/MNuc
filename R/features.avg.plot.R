@@ -11,15 +11,19 @@
 #'
 #' @export
 
-features.box.plot <- function(indir,
+features.avg.plot <- function(indir,
 							  outdir,
 							  fdir,
-							  chromsizes='sc',
+							  chromsizes = 'sc',
 							  lables = NULL,
-							  title="All features averages plot",
-							  filename="All_features_avg_plot",
-							  exclude_seq="chrM",
-							  ylim=NULL)
+							  title = "All features averages plot",
+							  log = FALSE,
+							  nlog = NULL,
+							  xlab = "Time",
+							  ylab = "Signal intensity",
+							  filename = "All_features_avg_plot",
+							  exclude_seq = "chrM",
+							  ylim = NULL)
 {
 	seql <- MNuc::seqlevels.from.chrsizes(chromsizes=chromsizes)
 
@@ -33,10 +37,10 @@ features.box.plot <- function(indir,
 	} )
 
 	feature_names <- lapply(features, function(f) { tools::file_path_sans_ext(basename(f)) })
-	cat("All features imported as genomicranges")
+	cat("All features imported as genomicranges\n")
 
 	### Import Signals > GR
-	cat("Importing signals started")
+	cat("Importing signals started. It takes time.\n")
 	signals <- list.files(path=indir, pattern="*.bdg.gz", full.names=TRUE, recursive=FALSE)
 		
 	scores_list <- lapply(signals, function(x) {
@@ -48,7 +52,7 @@ features.box.plot <- function(indir,
     	GenomicRanges::coverage(signal, weight="score")
 	} )
 
-	cat("Importing signals ended, scores list created without errors")
+	cat("Importing signals ended, scores list created without errors\n")
 
 	### Get Signal Names
 	if (is.null(lables)) {
@@ -70,28 +74,39 @@ features.box.plot <- function(indir,
             m <- mean(data$avg_score)
     	})
     	
-    	lim_min <- min(vec_data)
-    	lim_max <- max(vec_data)
-    	ylim = c(lim_min, lim_max)
+    	if (!log) {
+    	    lim_min <- min(vec_data)
+    	    lim_max <- max(vec_data)
+    	    ylim = c(lim_min, lim_max)
+    	    ylim = c(0,8)
+    	}
     	
     	mx <- matrix(vec_data, length(indir), byrow=TRUE)
     	x <- c(1:ncol(mx))
-    	plot(0,type='n',
-    	     axes=T,
-    	     xaxt="n",
-    	     ann=T, 
-    	     ylim=ylim, 
-    	     xlim=c(1, ncol(mx)),
-    	     main=feature_names[idx])
+    	if (log) {
+    	    limits <- apply(mx, 1, function(x) log2(x/x[nlog]))
+    	    ylim <- c(min(limits), max(limits))
+    	}
+    	
+    	plot(1,type = 'n',
+    	     axes = T,
+    	     xaxt = "n",
+    	     xlab = xlab,
+    	     ylab = ylab,
+    	     ann = T, 
+    	     ylim = ylim, 
+    	     xlim = c(1, ncol(mx)),
+    	     main = feature_names[idx])
     	
         for (i in 1:nrow(mx)) {
-            y <- mx[i,] 
+            y <- mx[i,]
+            if (log) y = log2(y/y[nlog])
             points(x, y, col=col[i])
             smoothingSpline = smooth.spline(x, y, spar=0.1)
             xl <- seq(min(x), max(x), length=length(x)*10)
             lines(predict(smoothingSpline, xl), col=col[i])
         }
-        axis(1, at=1:length(signal_names[x]), labels=signal_names[x], srt = 45, xpd=TRUE)
+        axis(1, at=1:length(signal_names), labels=signal_names, srt = 45, xpd=TRUE)
 	}))
 	
 	mtext(title, side=3, line=1, outer=TRUE, cex=1.5)

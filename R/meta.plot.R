@@ -45,6 +45,8 @@ meta.plot <- function (indir,
                        log = FALSE,
                        smooth = FALSE,
                        spar = 0.85,
+                       setmin = FALSE,
+                       setmink = FALSE,
                        main = "Meta Plot",
                        xlab = "Distance from feature, bp",
                        ylab = "Signal",
@@ -74,6 +76,16 @@ meta.plot <- function (indir,
     colors <- as.vector(read.table(col.file)[,1])
     colors <- tail(colors, n=(ncol(data[[1]])-1))
     
+    ##### Normalizing 'on the way'
+    if (setmin ==  TRUE & setmink == TRUE) stop("Set TRUE for \"setmin\" OR \"setmik\" for normalization.")
+    ## Set minimal values for all curves on same level by subtraction
+    if(setmin) {
+        data <- lapply(data, FUN=MNuc::setmin.dat)
+    }
+    if(setmink) {
+        data <- lapply(data, FUN=MNuc::setmink.dat)
+    }
+    
     ## GRAPHICAL PARAMETERS
     ## get coordinates and values limits
     if (is.null(xlim)) {
@@ -93,8 +105,9 @@ meta.plot <- function (indir,
     
     ##### Draw plot for all files
     dir.create(outdir, recursive=T)
-    rows=ceiling(length(files)/2)
-    cols=ceiling(length(files)/rows)
+    cols=ceiling(length(files))
+    rows=ceiling(length(files)/cols)
+    
     
     # PDF
     pdf(paste(outdir, filename, ".pdf", sep=""), width=3*cols, height=3*rows, pointsize=5)
@@ -118,7 +131,7 @@ meta.plot <- function (indir,
             x = data[[f]][,1]
             if(log==FALSE) { 
                 y = data[[f]][,(l+1)]
-            } else if(log==TRUE ) {
+            } else if (log==TRUE ) {
                 # The first element in ncur determine the denominator
                 y = log2(data[[f]][,(l+1)] / data[[f]][,(ncur[1]+1)])
             }
