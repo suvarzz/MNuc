@@ -63,10 +63,10 @@ features.avg.plot <- function(indir,
 	dir.create(file.path(outdir), recursive = TRUE)
 	
 	pdf(paste(outdir, filename, ".pdf", sep=""), width=7, height=13, pointsize=5)
-	par(mfrow=c(6,3)) # how many diagrams on one plot?
+	par(mfrow=c(6,4)) # how many diagrams on one plot?
 	par(mar=c(4,4,2,1.5)) # margins size
 	par(oma=c(4,1,4,1)) # outer margins in lines
-	col=c('darkslateblue', 'brown4')
+	col=c('darkslateblue', 'brown4', 'grey')
 
 	invisible(lapply(seq_along(feature_list), function(idx) {
     	vec_data <- sapply(scores_list, function(sc) {
@@ -78,10 +78,10 @@ features.avg.plot <- function(indir,
     	    lim_min <- min(vec_data)
     	    lim_max <- max(vec_data)
     	    ylim = c(lim_min, lim_max)
-    	    ylim = c(0,8)
+    	    #ylim = c(0,8)
     	}
     	
-    	mx <- matrix(vec_data, length(indir), byrow=TRUE)
+    	mx <- matrix(vec_data, nrow=length(indir), byrow=TRUE)
     	x <- c(1:ncol(mx))
     	if (log) {
     	    limits <- apply(mx, 1, function(x) log2(x/x[nlog]))
@@ -94,7 +94,8 @@ features.avg.plot <- function(indir,
     	     xlab = xlab,
     	     ylab = ylab,
     	     ann = T, 
-    	     ylim = ylim, 
+    	     ylim = ylim,
+    	     las=1,
     	     xlim = c(1, ncol(mx)),
     	     main = feature_names[idx])
     	

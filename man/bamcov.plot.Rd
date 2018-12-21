@@ -10,7 +10,7 @@
   outdir = "/home/suvar/Desktop/", lables = c("HU-SR 2h", "HU-SR 0'",
   "HU-SR 10'", "HU-SR 20'", "HU-SR 30'", "HU-SR 40'", "HU-SR 50'",
   "HU-SR 60'", "HU-SR 70'", "HU-SR 80'", "HU-SR 90'"),
-  filename = "BamCoverage_plot.png")
+  filename = "BamCoverage_plot.png", log = FALSE)
 
 
   bamcov.plot(indir1 = "/home/suvar/Projects/007_ChIPseq_HU-SR/output/bam_cov/Et/IP",
@@ -18,7 +18,7 @@
   outdir = "/home/suvar/Desktop/", lables = c("HU-SR 2h", "HU-SR 0'",
   "HU-SR 10'", "HU-SR 20'", "HU-SR 30'", "HU-SR 40'", "HU-SR 50'",
   "HU-SR 60'", "HU-SR 70'", "HU-SR 80'", "HU-SR 90'"),
-  filename = "BamCoverage_plot.png")
+  filename = "BamCoverage_plot.png", log = FALSE)
 }
 \arguments{
 \item{outdir}{Output directory}

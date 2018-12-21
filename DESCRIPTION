@@ -5,10 +5,11 @@ Author: Mark Boltengagen
 Maintainer: Mark Boltengagen <m.boltengagen@gmail.com>
 Description: H4K16Ac ChIP-seq analysis in C.serevisiae
 License: GPL (>=2)
+Encoding: UTF-8
 VignetteBuilder: knitr
-Depends: R (>= 3.4), data.table, GenomicRanges, rtracklayer, TxDb.Scerevisiae.UCSC.sacCer3.sgdGene
+Depends: R (>= 3.4), data.table, GenomicRanges, gplots, rtracklayer, TxDb.Scerevisiae.UCSC.sacCer3.sgdGene, BSgenome.Scerevisiae.UCSC.sacCer3, png
 Imports: IRanges, GenomicFeatures
 Suggests: RColorBrewer
 NeedsCompilation: no
 Packaged: 2018-07-23
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

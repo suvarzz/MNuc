@@ -6,12 +6,11 @@
 \usage{
 
   ars.avg.plot(indir = c("/home/suvar/Projects/007_ChIPseq_HU-SR/output/ars_dat/quantiles/Et",
-  "/home/suvar/Projects/007_ChIPseq_HU-SR/output/ars_dat/quantiles/IAA",
-  "/home/suvar/Projects/001_ChIPseq_HU/output/ars_dat/quantiles"),
-  expnames = c("HU-Et", "HU-IAA", "HU-NR"), timepoints = c("2h",
-  "1.5h", "0", "10", "20", "30", "40", "50", "60", "70", "80", "90"),
+  "/home/suvar/Projects/007_ChIPseq_HU-SR/output/ars_dat/quantiles/IAA"),
+  expnames = c("HU-Et", "HU-IAA"), timepoints = c("2h", "1.5h", "0",
+  "10", "20", "30", "40", "50", "60", "70", "80", "90"),
   splitnames = c("Q1", "Q2", "Q3", "Q4"),
-  outdir = "/home/suvar/Desktop/", setmink = TRUE, shift = TRUE,
+  outdir = "/home/suvar/Desktop/", setmink = TRUE,
   title = "All features averages plot", xlab = "Time",
   ylab = "Signal intensity", filename = "ars_avg_plot")
 }

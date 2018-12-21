@@ -1,0 +1,5 @@
+library("devtools")
+setwd("/home/suvar/Projects/MNuc/")
+document()
+setwd("/home/suvar/Projects/")
+install("MNuc")

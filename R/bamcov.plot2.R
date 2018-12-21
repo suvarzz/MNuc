@@ -11,7 +11,8 @@ bamcov.plot <- function(indir1 = "/home/suvar/Projects/007_ChIPseq_HU-SR/output/
 						lables = c("HU-SR 2h", "HU-SR 0'", "HU-SR 10'", "HU-SR 20'", "HU-SR 30'",
 						           "HU-SR 40'", "HU-SR 50'", "HU-SR 60'", "HU-SR 70'", "HU-SR 80'",
 						           "HU-SR 90'"),
-                        filename = "BamCoverage_plot.png")
+                        filename = "BamCoverage_plot.png",
+						log=FALSE)
 
 {
 
@@ -19,6 +20,8 @@ files1 <- list.files(path=indir1, pattern=".bg.gz", full.names=TRUE, recursive=F
 files2 <- list.files(path=indir2, pattern=".bg.gz", full.names=TRUE, recursive=FALSE)
 
 dir.create(file.path(outdir), recursive = TRUE)
+
+# PLOT
 png(paste(outdir, filename, sep=""), width=150, height=200, units="mm", res=600, pointsize=7)
 # Figure parameters
 par(mfrow=c(4,3)) # how many diagram on one plot?
@@ -32,6 +35,12 @@ silent <- lapply(seq_along(files1), function(i) {
     x <- read.table(files1[i])
     y <- read.table(files2[i])
     
+    if (log) {
+        x$V4 <- log2(x$V4)
+        y$V4 <- log2(y$V4)
+        xlim <- c(0, log2(xlim[2]))
+        ylim <- c(0, log2(ylim[2]))
+    }
     
     plot(x$V4, y$V4,
          mgp=c(2.5,0.5,0), # margins of lables
@@ -56,3 +65,4 @@ silent <- lapply(seq_along(files1), function(i) {
 
 dev.off()
 }
+

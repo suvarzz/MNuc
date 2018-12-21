@@ -106,3 +106,46 @@ setmink2.dat <- function(df)
     }
     return(df)
 }
+
+#' Find normalizing coefficients based on Nucleosome Free Regions (NFR).
+#' For data frames where rownames contain coordinates, and data frame contains data only.
+#' @param dir Directory containing vector of meandata for all features containing Nucleosome Free Regions.
+#' e.g. TSS, ARS
+#' 
+#' @param snames Sample names
+#' @param dirnames Vector containing names of features (one feature in the input directory)
+#' @param weights Vector containings number of every feature in a genome. Need for calculation of weighted means.  
+#' @return matrix of coefficients for each sample in each given feature
+#' @export
+
+mxkmink <- function(indir=c("/home/suvar/Projects/007_ChIPseq_HU-SR/output/tss_data/Et/means/all/Meandata-All_1.mean.dat.gz",
+                          "/home/suvar/Projects/007_ChIPseq_HU-SR/output/ars_dat/all/Et/HU_SR_Et_ars_meandata_All_1.mean.dat.gz"),
+                    snames=c("2h", "1.5h", "0'", "10'", "20'", "30'", "40'" , "50'", "60'", "70'", "80'" , "90'"),
+                    dirnames=c("et_tss", "et_ars"),
+                    weights=c(4547, 352)) # tss, ars
+{
+    # Read files 
+    data <- lapply(indir, function(f) {
+        df <- read.table(f, header=TRUE, sep="\t", na.strings="NA", check.names=TRUE)
+    })
+    ## create matrix of normalizing coefficients
+    mx = matrix(data=0, nrow=length(indir), ncol=ncol(data[[1]])-1)
+    colnames(mx) <- snames
+    rownames(mx) <- dirnames
+    
+   ## Calculate normalizing coefficients
+   for (l in 1:length(data)) {
+       df <- data[[l]]
+       minvalue <- min(df[2:ncol(df)])
+       nr <- which(df == minvalue, arr.ind=TRUE)[1]
+       for (i in 2:ncol(df)) {
+           k <- minvalue/df[nr, i]
+           mx[l,i-1] <- k
+       }
+   }
+    
+   # Weighted mean
+   mx <- rbind(mx, wmean_norm_k=apply(mx, 2, function(x) weighted.mean(x, w=weights)))
+   mx
+   return(mx)
+}
