@@ -5,7 +5,7 @@ R package containing tools for bioinformatics.
 ### Install MNuc package from gitHub
 This is the fast way to make package ready for work, however, man pages will not be displayed.  
 
-Print in RStudio command line:  
+Type in RStudio command line:  
 ```{r}
 library("devtools") 
 install_github("suvarzz/MNuc")  
@@ -20,7 +20,7 @@ Complete installation of MNuc package locally on your PC.
 install.packages(c(devtools, roxygen2))
 ```
 
-4. Print in RStudio command line:  
+4. Type in RStudio command line:  
 ```{r}
 library("devtools")  
 setwd("~/Projects/MNuc/")  
