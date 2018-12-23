@@ -1,5 +1,5 @@
 library("devtools")
-setwd("/home/suvar/Projects/MNuc/")
+setwd("/home/suvar/github/MNuc/")
 document()
-setwd("/home/suvar/Projects/")
+setwd("/home/suvar/github/")
 install("MNuc")
