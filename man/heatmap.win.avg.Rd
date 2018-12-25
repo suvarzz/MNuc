@@ -6,7 +6,8 @@
 \usage{
 heatmap.win.avg(indir, outdir, chromosome = c(1, 2, 3, 4, 5, 6, 7, 8, 9,
   10, 11, 12, 13, 14, 15, 16), norm = NULL, fname = "HeatMap",
-  log = TRUE, width = NULL, step = NULL, comb = TRUE)
+  log = TRUE, nlog = NULL, width = NULL, step = NULL,
+  comb = TRUE, threads = 2)
 }
 \arguments{
 \item{indir}{Directory containing bedgraph files with peaks}
@@ -20,6 +21,12 @@ heatmap.win.avg(indir, outdir, chromosome = c(1, 2, 3, 4, 5, 6, 7, 8, 9,
 \item{fname}{File name}
 
 \item{log}{Log difference (to common average)}
+
+\item{nlog}{Given number to compair (e.g. global mean). It is not calculated if define.}
+
+\item{comb}{Create pdf file with combined heatmaps for all chromosomes (all png in the output directory)}
+
+\item{threads}{How many logical processors are available?}
 }
 \description{
 Heatmap of binned averages from bedgraph files

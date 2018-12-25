@@ -5,9 +5,14 @@
 #' @param indir Directory containing bedgraph files with peaks
 #' @param outdir Output directory
 #' @param chromosome Chromosome to draw
-#' @param fname File name
 #' @param norm Vector of normalization coeficients
 #' @param log Log difference (to common average)
+#' @param nlog Given number to compair (e.g. global mean). It is not calculated if define.
+#' @param fname File name
+#' @param width
+#' @param step
+#' @param comb Create pdf file with combined heatmaps for all chromosomes (all png in the output directory)
+#' @param threads How many logical processors are available?
 #' 
 #' @return NULL
 #' @export
@@ -18,9 +23,11 @@ heatmap.win.avg <- function(indir,
                             norm = NULL,
                             fname = "HeatMap",
                             log = TRUE,
+                            nlog = NULL,
                             width = NULL,
                             step = NULL,
-                            comb=TRUE)
+                            comb = TRUE,
+                            threads = 2)
 {
     # Create output directory
     dir.create(file.path(outdir), recursive = TRUE)
@@ -57,7 +64,7 @@ heatmap.win.avg <- function(indir,
         # Calculate binned average
         win_data <- GenomicRanges::binnedAverage(wins.chr, score, "avg_score")
         mcols(win_data)$avg_score
-    })
+    }, mc.cores=threads)
 
     mx <- matrix(unlist(list_data), nrow = length(list_data), byrow = TRUE)
     
@@ -67,12 +74,14 @@ heatmap.win.avg <- function(indir,
     }
     
     if (log) {
-    # log difference with whole mean
-   mx <- log2(mx/18.10279)#log2(mx/mean(mx)) # log2(mx/20.58096)  # 
-    # log difference with the first sample
-    #mx <- log2(t(t(mx)/mx[1,]))
-    # remove extreme values
-    mx[!is.finite(mx)] <- 0
+        # log difference with whole mean
+        if (is.null(nlog)) {
+            nlog = mean(mx)
+        }
+        mx <- log2(mx/nlog)
+        
+        # remove extreme values
+        mx[!is.finite(mx)] <- 0
     }
 
     # set limits for better color usage
@@ -82,7 +91,10 @@ heatmap.win.avg <- function(indir,
     # width of plot addjusted to chromosome size
     width <- as.numeric(round(0.00347*seql[chr], digits=0))
     
-    png(file=paste(outdir, fname, "_", chr, ".png", sep=""), width=width, height=1000)
+    # add leading zeros to the chromosomes for correct sorting
+    lead0_chr = formatC(chr, width=3, format="d", flag="0")
+    
+    png(file=paste(outdir, fname, "_", lead0_chr, ".png", sep=""), width=width, height=1000)
     par(mai=c(0.1,0.1,0.1,0.1))
 
     # set color scheme
