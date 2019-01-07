@@ -5,10 +5,10 @@
 \title{All features averages plot}
 \usage{
 features.avg.plot(indir, outdir, fdir, chromsizes = "sc",
-  lables = NULL, title = "All features averages plot", log = FALSE,
-  nlog = NULL, xlab = "Time", ylab = "Signal intensity",
-  filename = "All_features_avg_plot", exclude_seq = "chrM",
-  ylim = NULL)
+  lables = NULL, title = "All features averages plot",
+  smooth = FALSE, log = FALSE, nlog = NULL, xlab = "Time",
+  ylab = "Signal intensity", filename = "All_features_avg_plot",
+  exclude_seq = "chrM", ylim = NULL)
 }
 \arguments{
 \item{indir}{Input directory containing bedgraph files.}
@@ -19,7 +19,9 @@ features.avg.plot(indir, outdir, fdir, chromsizes = "sc",
 
 \item{chromsizes}{Text file containing sizes of all chromosomes in columns (chromosome ~ size).}
 
-\item{title}{Main title of the plot}
+\item{title}{Main title of the plot.}
+
+\item{smooth}{If lines between points are smoothed.}
 
 \item{filename}{Name of the output plot file}
 

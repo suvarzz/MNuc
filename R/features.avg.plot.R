@@ -4,7 +4,8 @@
 #' @param outdir Output directory.
 #' @param fdir Directory containing different features in files.
 #' @param chromsizes Text file containing sizes of all chromosomes in columns (chromosome ~ size).
-#' @param title Main title of the plot
+#' @param title Main title of the plot.
+#' @param smooth If lines between points are smoothed.
 #' @param filename Name of the output plot file
 #' @param notes Optional notes, which is displayed in the bottom of the plot.
 #' @param exclude_seq Optional argument to exclude chromosomes.
@@ -17,6 +18,7 @@ features.avg.plot <- function(indir,
 							  chromsizes = 'sc',
 							  lables = NULL,
 							  title = "All features averages plot",
+							  smooth = FALSE,
 							  log = FALSE,
 							  nlog = NULL,
 							  xlab = "Time",
@@ -74,11 +76,10 @@ features.avg.plot <- function(indir,
             m <- mean(data$avg_score)
     	})
     	
-    	if (!log) {
+    	if (!log & is.null(ylim)) {
     	    lim_min <- min(vec_data)
     	    lim_max <- max(vec_data)
     	    ylim = c(lim_min, lim_max)
-    	    #ylim = c(0,8)
     	}
     	
     	mx <- matrix(vec_data, nrow=length(indir), byrow=TRUE)
@@ -103,9 +104,13 @@ features.avg.plot <- function(indir,
             y <- mx[i,]
             if (log) y = log2(y/y[nlog])
             points(x, y, col=col[i])
+            if (smooth) {
             smoothingSpline = smooth.spline(x, y, spar=0.1)
             xl <- seq(min(x), max(x), length=length(x)*10)
             lines(predict(smoothingSpline, xl), col=col[i])
+            } else {
+                lines(x, y, col=col[i])
+            }
         }
         axis(1, at=1:length(signal_names), labels=signal_names, srt = 45, xpd=TRUE)
 	}))
