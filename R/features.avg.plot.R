@@ -92,8 +92,15 @@ features.avg.plot <- function(indir,
     	mx <- matrix(vec_data, nrow=length(indir), byrow=TRUE)
     	x <- c(1:ncol(mx))
     	if (log & is.null(ylim)) {
-    	    limits <- apply(mx, 1, function(x) log2(x/x[nlog]))
-    	    ylim <- c(min(limits), max(limits))
+    	    if (!is.null(nlog)) {
+    	      limits <- apply(mx, 1, function(x) log2(x/x[nlog]))
+    	      ylim <- c(min(limits), max(limits))
+    	    }
+    	    if (!is.null(log.num)) {
+    	      limits <- apply(mx, 1, function(x) log2(x/log.num))
+    	      ylim <- c(min(limits), max(limits))
+    	    }
+
     	}
     	
     	plot(1,type = 'n',
