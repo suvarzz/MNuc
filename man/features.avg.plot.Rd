@@ -6,9 +6,10 @@
 \usage{
 features.avg.plot(indir, outdir, fdir, chromsizes = "sc",
   lables = NULL, title = "All features averages plot",
-  smooth = FALSE, log = FALSE, nlog = NULL, xlab = "Time",
-  ylab = "Signal intensity", filename = "All_features_avg_plot",
-  exclude_seq = "chrM", ylim = NULL)
+  smooth = FALSE, log = FALSE, nlog = NULL, log.num = NULL,
+  xlab = "Time", ylab = "Signal intensity",
+  filename = "All_features_avg_plot", exclude_seq = "chrM",
+  ylim = NULL)
 }
 \arguments{
 \item{indir}{Input directory containing bedgraph files.}
@@ -23,11 +24,15 @@ features.avg.plot(indir, outdir, fdir, chromsizes = "sc",
 
 \item{smooth}{If lines between points are smoothed.}
 
+\item{log}{Boolean, if log difference of signal is needed.}
+
+\item{nlog}{Id of sample in files in 'indir' which is used for log difference (e.g. 1 - first sample) 'log' must be TRUE, log.num must be NULL.}
+
+\item{log.num}{Numeric to calculate log difference (e.g. 21.5). 'log' must be TRUE, nlog must be NULL.}
+
 \item{filename}{Name of the output plot file}
 
 \item{exclude_seq}{Optional argument to exclude chromosomes.}
-
-\item{notes}{Optional notes, which is displayed in the bottom of the plot.}
 }
 \description{
 All features averages plot
