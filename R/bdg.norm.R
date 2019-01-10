@@ -11,12 +11,15 @@
 
 bdg.norm <- function(indir,
                      outdir,
-                     normk=NULL)
+                     normk=NULL,
+                     threads=1L)
 {
     files <- list.files(path=indir, pattern="\\.bdg.gz$", full.names=TRUE, recursive=FALSE)
     
     if (length(files)!=length(normk)) stop("Length of normk must be equal to number of files to normalize")
     if (is.null(normk)) stop("Please specify nomralizing multipliers.")
+    
+    if(!dir.exists(outdir)) dir.create(outdir)
     
     silent <- mclapply(1:length(files), function(i) {
         # Import bedGraph to GRanges
@@ -25,6 +28,5 @@ bdg.norm <- function(indir,
         
         # Export bedgraph file
         rtracklayer::export(gr, con=paste(outdir, basename(files[i]), sep=""), format="bedGraph" )
-    })
+    }, mc.cores=threads)
 }
-    

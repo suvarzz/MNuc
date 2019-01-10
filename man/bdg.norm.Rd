@@ -4,7 +4,7 @@
 \alias{bdg.norm}
 \title{Normalize bed graph files}
 \usage{
-bdg.norm(indir, outdir, normk = NULL)
+bdg.norm(indir, outdir, normk = NULL, threads = 1L)
 }
 \arguments{
 \item{indir}{Directory containing bedgraph files with peaks}
