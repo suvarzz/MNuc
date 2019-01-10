@@ -12,6 +12,8 @@ bdg.norm(indir, outdir, normk = NULL, threads = 1L)
 \item{outdir}{Output directory to save bedgraph files after normalization}
 
 \item{normk}{Vector of lengths of files containing multipliers for normalization}
+
+\item{threads}{Number of processors}
 }
 \description{
 Normalize bed graph files

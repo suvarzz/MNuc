@@ -12,14 +12,14 @@
 #' @export
 
 features.box.plot <- function(indir,
-							  outdir,
-							  fdir,
-							  chromsizes='sc',
-							  title="Average log2 difference of H4K16Ac vs 1.5h sample",
-							  filename="All_features_box_plot",
-							  notes="",
-							  exclude_seq="chrM",
-							  ylim=NULL)
+							                outdir,
+							                fdir,
+							                chromsizes='sc',
+							                title="Average log2 difference of H4K16Ac vs 1.5h sample",
+							                filename="All_features_box_plot",
+							                notes="",
+							                exclude_seq="chrM",
+							                ylim=NULL)
 {
 	seql <- MNuc::seqlevels.from.chrsizes(chromsizes=chromsizes)
 
