@@ -5,6 +5,7 @@
 #' @param indir Directory containing bedgraph files with peaks
 #' @param outdir Output directory to save bedgraph files after normalization
 #' @param normk Vector of lengths of files containing multipliers for normalization
+#' @param threads Number of processors
 #' 
 #' @return NULL
 #' @export
