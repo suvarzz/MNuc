@@ -14,9 +14,9 @@
 #' 
 #' @export
 mxl <- function(indir,
-               expnames = NULL,
-               timepoints = NULL,
-               splitnames = NULL) {
+                expnames = NULL,
+                timepoints = NULL,
+                splitnames = NULL) {
     
     if (is.null(indir)) stop("Specify \"indir\" input directories.")
     nl <- length(indir) # length of list
@@ -69,14 +69,16 @@ mxl <- function(indir,
 mxl.dotplot <- function(mxl,
                         outdir, 
                         filename, 
-                        title, ...) {
+                        title,
+                        xlab = "Signal intensity",
+                        ylab = "Time series", ...) {
 
-    dir.create(file.path(outdir), recursive = TRUE)
+    dir.create(file.path(outdir), recursive = TRUE, showWarnings = FALSE)
     
     ylim <- c(min(unlist(mxl)), max(unlist(mxl)))
     
     pdf(paste(outdir, filename, ".pdf", sep=""), width=12, height=3, pointsize=5)
-    col=c('black', 'red', 'blue')
+    col=c('black', 'red', 'grey')
     par(mfrow=c(1,length(mxl)))
     par(mar=c(4,4,2,1.5)) # margins size
     par(oma=c(4,1,4,1)) # outer margins in lines
@@ -91,7 +93,9 @@ mxl.dotplot <- function(mxl,
              ylim = ylim, 
              xlim = c(1, ncol(mx)),
              ann = T,
-             main = names(mxl[f]))
+             main = names(mxl[f]),
+             xlab = xlab,
+             ylab = ylab)
         
         # Draw 
         for (i in 1:nrow(mx)) {

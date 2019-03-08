@@ -12,14 +12,14 @@
 #' @export
 
 features.box.plot <- function(indir,
-							                outdir,
-							                fdir,
-							                chromsizes='sc',
-							                title="Average log2 difference of H4K16Ac vs 1.5h sample",
-							                filename="All_features_box_plot",
-							                notes="",
-							                exclude_seq="chrM",
-							                ylim=NULL)
+							  outdir,
+							  fdir,
+							  chromsizes='sc',
+							  title="Average log2 difference of H4K16Ac vs 1.5h sample",
+							  filename="All_features_box_plot",
+							  notes="",
+							  exclude_seq="chrM",
+							  ylim=NULL)
 {
 	seql <- MNuc::seqlevels.from.chrsizes(chromsizes=chromsizes)
 
@@ -72,7 +72,7 @@ features.box.plot <- function(indir,
 
 	### START PLOT
 	print("Plot started")
-	dir.create(file.path(outdir), recursive = TRUE)
+	dir.create(file.path(outdir), recursive = TRUE, showWarnings = FALSE)
 	pdf(paste(outdir, filename, ".pdf", sep=""), width=7, height=13, pointsize=5)
 	par(mfrow=c(6,3)) # how many diagrams on one plot?
 	par(mar=c(4,4,2,1.5)) # margins size

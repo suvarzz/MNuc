@@ -30,7 +30,7 @@ heatmap.win.avg <- function(indir,
                             threads = 2)
 {
     # Create output directory
-    dir.create(file.path(outdir), recursive = TRUE)
+    dir.create(file.path(outdir), recursive = TRUE, showWarnings = FALSE)
 
     # GR from the whole genome
     sc <- BSgenome.Scerevisiae.UCSC.sacCer3

@@ -54,7 +54,7 @@ saveGR <- function(gr, outdir=NULL, filename='new_genomic_range') {
     if (is.null(outdir)) {
         stop("output directory must be specified") }
     if (!file.exists(outdir)) {
-        dir.create(file.path(outdir)) }
+        dir.create(file.path(outdir), recursive=TRUE, showWarnings = FALSE) }
     write.table(as(gr, "data.frame"), file = paste(outdir, filename, ".csv", sep=""), sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE )
     system2("gzip", args=paste(outdir, filename, ".csv", sep=""))
 }
@@ -77,7 +77,7 @@ saveGRlist <- function(grl, outdir=NULL) {
   if (is.null(outdir)) {
     stop("output directory must be specified") }
   if (!file.exists(outdir)) {
-    dir.create(file.path(outdir)) }
+    dir.create(file.path(outdir), recursive = TRUE, showWarnings = FALSE) }
   silent <- lapply(names(grl), function(x) {
     write.table(as(grl[[x]], "data.frame"), file = paste(outdir, x, ".csv", sep=""), sep="\t", col.names=TRUE, row.names=FALSE, quote=FALSE )
     system2("gzip", args=paste(outdir, x, ".csv", sep=""))

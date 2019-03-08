@@ -22,7 +22,7 @@ find.norm.k <- function(fbam,
                k <- reads/reads_spikes
     })
     dt <- data.table(name=basename(bam_files), factor=factors)
-    dir.create(file.path(outdir), recursive = TRUE)
+    dir.create(file.path(outdir), recursive = TRUE, showWarnings = FALSE)
     fwrite(dt, file=paste(outdir, "/", filename, sep=""), sep="\t")
 }
 
@@ -41,7 +41,7 @@ norm.mean.dat <- function(norm,
 {
     normk <- read.table(norm, header=TRUE, sep="\t", na.strings="NA", check.names=TRUE)
     files <- list.files(path=mdat, pattern="*.dat.gz", full.names=T, recursive=FALSE)
-    dir.create(file.path(outdir), recursive=T)
+    dir.create(file.path(outdir), recursive=T, showWarnings = FALSE)
     silent <- lapply(1:length(files), function(f) {
         dat <- read.table(files[f], header=TRUE, sep="\t", na.strings="NA", check.names=TRUE)
         for (cln in 2:ncol(dat)) {

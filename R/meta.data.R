@@ -45,7 +45,7 @@ meta.data <- function(meta.csv,
         }
 	
 	# Create output directory
-	dir.create(file.path(outdir), recursive=T)
+	dir.create(file.path(outdir), recursive = TRUE, showWarnings = FALSE)
 	
     numcores = ifelse((!is.null(threads) & is.numeric(threads)), threads, parallel::detectCores() - 1)
 	

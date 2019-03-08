@@ -14,7 +14,7 @@ bdg.binned.average <- function(indir,
                                binsize = 100)
 {
     # Create output directory
-    dir.create(file.path(outdir), recursive = TRUE)
+    dir.create(file.path(outdir), recursive = TRUE, showWarnings = FALSE)
 
     bins <- tileGenome(seqinfo(BSgenome.Scerevisiae.UCSC.sacCer3), tilewidth=binsize, cut.last.tile.in.chrom=TRUE)
 

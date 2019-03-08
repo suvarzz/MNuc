@@ -104,7 +104,7 @@ meta.plot <- function (indir,
     }
     
     ##### Draw plot for all files
-    dir.create(outdir, recursive=T)
+    dir.create(outdir, recursive=TRUE, showWarnings = FALSE)
     cols=ceiling(length(files))
     rows=ceiling(length(files)/cols)
     

@@ -136,7 +136,7 @@ write.mean.dat <- function(datdir, selected_names=NULL, outdir, file_name) {
     dwn <- coord$downstream
     
     DT <- data.table(Coordinates = up:dwn)
-    dir.create(outdir, recursive=T)
+    dir.create(outdir, recursive=TRUE, showWarnings = FALSE)
     for (i in 1:length(files)) {
     
         ## Read gz file as data.table

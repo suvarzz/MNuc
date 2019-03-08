@@ -27,6 +27,6 @@ genelength.from.sgd <- function(file, outdir, filename="genelength", from=NULL, 
     gl <- gl[length >= from][length <= to]
     
     # Write data
-    dir.create(outdir, recursive=T)
+    dir.create(outdir, recursive=TRUE, showWarnings = FALSE)
     write.table(gl, file=paste(outdir, filename, ".txt", sep=""), append=FALSE, quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
 }

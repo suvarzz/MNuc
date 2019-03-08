@@ -11,7 +11,7 @@ bamcov.plot <- function(indir,
 {
 
 files <- list.files(path=inpdir, pattern="_IP_bins.bg", full.names=TRUE, recursive=FALSE)
-dir.create(file.path(outdir), recursive = TRUE)
+dir.create(file.path(outdir), recursive = TRUE, showWarnings = FALSE)
 png(paste(outdir, "BamCoverage_plot.png", sep=""), width=135, height=90, units="mm", res=600, pointsize=7)
 # Figure parameters
 par(mfrow=c(2,3)) # how many diagram on one plot?

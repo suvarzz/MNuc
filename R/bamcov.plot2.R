@@ -19,7 +19,7 @@ bamcov.plot <- function(indir1 = "/home/suvar/Projects/007_ChIPseq_HU-SR/output/
 files1 <- list.files(path=indir1, pattern=".bg.gz", full.names=TRUE, recursive=FALSE)
 files2 <- list.files(path=indir2, pattern=".bg.gz", full.names=TRUE, recursive=FALSE)
 
-dir.create(file.path(outdir), recursive = TRUE)
+dir.create(file.path(outdir), recursive = TRUE, showWarnings = FALSE)
 
 # PLOT
 png(paste(outdir, filename, sep=""), width=150, height=200, units="mm", res=600, pointsize=7)

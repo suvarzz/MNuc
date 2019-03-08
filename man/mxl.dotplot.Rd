@@ -6,7 +6,8 @@
 
 Take list of matrices and plot each matrix on separate figure. Legends are in name of matrices.}
 \usage{
-mxl.dotplot(mxl, outdir, filename, title, ...)
+mxl.dotplot(mxl, outdir, filename, title, xlab = "Signal intensity",
+  ylab = "Time series", ...)
 }
 \arguments{
 \item{mxl}{List of matrices.}

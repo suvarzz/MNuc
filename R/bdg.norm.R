@@ -20,7 +20,7 @@ bdg.norm <- function(indir,
     if (length(files)!=length(normk)) stop("Length of normk must be equal to number of files to normalize")
     if (is.null(normk)) stop("Please specify nomralizing multipliers.")
     
-    if(!dir.exists(outdir)) dir.create(outdir)
+    if(!dir.exists(outdir)) dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
     
     silent <- mclapply(1:length(files), function(i) {
         # Import bedGraph to GRanges

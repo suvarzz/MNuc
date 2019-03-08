@@ -68,7 +68,7 @@ features.avg.plot <- function(indir,
 	} else { signal_names <- lables}   
 	### START PLOT
 	cat("Plot started")
-	dir.create(file.path(outdir), recursive = TRUE)
+	dir.create(file.path(outdir), recursive = TRUE, showWarnings = FALSE)
 	
 	pdf(paste(outdir, filename, ".pdf", sep=""), width=7, height=13, pointsize=5)
 	par(mfrow=c(6,4)) # how many diagrams on one plot?
